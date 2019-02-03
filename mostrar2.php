@@ -7,6 +7,7 @@
     
 
     <title>Futbol</title>
+
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -29,15 +30,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand">Trabajo de AW / Gabriel Omar Siles</a>
+              <a class="navbar-brand">Tabla de equipos</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
+			  <li><a href="index.php">Inicio</a></li>
 			  <li class="Mostrar">
                   <a href="#Mostrar" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mostrar <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><a href="mostrar1.php">Mostrar 1</a></li>
-                    <li><a href="mostrar2.php">Mostrar 2</a></li>
                   </ul>
                 </li>
                 <li><a href="insertar.php">Insertar</a></li>
@@ -53,79 +54,57 @@
     </div>
 
 
-    <!-- Carousel
-    ================================================== -->
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner" role="listbox">
-        <div class="item active">
-          <img class="first-slide" src="img/fondo2.png" alt="First slide">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1></h1>
-              <p></p>
-              
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <img class="second-slide" src="img/fondo4.png" alt="Second slide">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1></h1>
-			  <p></p>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <img class="third-slide" src="img/fondo1.png" alt="Third slide">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1></h1>
-              <p></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div><!-- /.carousel -->
 	
 	<!-- Marketing messaging and featurettes
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
+<br><br><br><br>
 
-    <div class="container marketing">
+		<?php
+			$servidor = "localhost";
+			$usuari = "root";
+			$password = "";
+			$db = "futbol";
 
-      <!-- Three columns of text below the carousel -->
-      <div class="row">
-        <div class="col-lg-4">
-          <img class="img-circle" src="img/pelota.png" alt="Generic placeholder image" width="140" height="140">
-          <h2>Futbol</h2>
-          <p>Página web donde se mostrara una tabla de equipos de futbol y sus títulos ganados.</p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="img/copa.png" alt="Generic placeholder image" width="140" height="140">
-          <h2>Títulos</h2>
-          <p>Tabla donde contendrá todos los títulos ganados de cada equipo.</p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="img/escudo.png" alt="Generic placeholder image" width="140" height="140">
-          <h2>Equipos</h2>
-          <p>Tabla que contendrá los equipos de futbol.</p>
-        </div><!-- /.col-lg-4 -->
-      </div><!-- /.row -->
+			// Create connection
+			$conn = new mysqli($servidor, $usuari, $password, $db);
+			
+			// Check connection
+			if ($conn->connect_error) {
+				die("Connexió KO: " . $conn->connect_error);
+			} 
+			else {
+
+				$sql = "SELECT codi, nom, codiequip FROM titols";
+				$result = $conn->query($sql);
+
+				if ($result->num_rows > 0) {
+					// output data of each row
+					echo "<div class=\"table-responsive\"> 
+					      <table class=\"table table-striped\">
+						  <thead>
+							<tr>
+							  <th>codi</th>
+							  <th>nom</th>
+							  <th>codiequip</th>
+							</tr>
+						  </thead>
+						  <tbody>";
+					while($rows = $result->fetch_assoc()) {
+						echo "<tr><td>" . $rows['codi'] . "</td><td>" . $rows['nom'] . "</td><td>". $rows['codiequip']. "</td></tr>";
+					}
+					echo "</tbody>
+						  </table>
+						  </div>";
+					
+				} else {
+					echo "0 registres";
+				}
+				$conn->close();
+			}
+		?>
+
+
 
       <!-- FOOTER -->
       <footer>
